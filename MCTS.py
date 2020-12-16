@@ -29,7 +29,7 @@ class MCTS():
         self.Vs = {}  # stores game.getValidMoves for board s
 
     def reset(self):
-        self.__init__(self, self.game, self.nnet, self.args, self.vizshow)
+        self.__init__(self.game, self.nnet, self.args, self.vizshow)
 
     def getActionProb(self, canonicalBoard, temp=1):
         """
@@ -48,7 +48,8 @@ class MCTS():
 
         if temp == 0:
             bestAs = np.array(np.argwhere(counts == np.max(counts))).flatten()
-            bestA = np.random.choice(bestAs)
+            #bestA = np.random.choice(bestAs)
+            bestA = bestAs[0]
             probs = [0] * len(counts)
             probs[bestA] = 1
             return probs
@@ -87,6 +88,8 @@ class MCTS():
             return -self.Es[s]
 
         if s not in self.Ps:
+            if self.vizshow:
+                self.viztree.show()
             # leaf node
             self.Ps[s], v = self.nnet.predict(canonicalBoard)
             valids = self.game.getValidMoves(canonicalBoard, 1)
@@ -129,8 +132,7 @@ class MCTS():
         next_s = self.game.getCanonicalForm(next_s, next_player)
         next_str = self.game.stringRepresentation(next_s)
         self.viztree.add_node(next_str, s)
-        if self.vizshow:
-            self.viztree.show()
+
         v = self.search(next_s)
 
         if (s, a) in self.Qsa:
