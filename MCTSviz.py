@@ -28,9 +28,13 @@ class MCTSviz():
             except KeyError:
                 pass
 
-    def show(self, Ns, Nsa):
+    def show(self, Ns, Nsa, s):
         self.update_data(Ns, Nsa)
-        for pre, fill, node in RenderTree(self.base):
+        if s in self.nodes:
+            root = self.nodes[s]
+        else:
+            root = self.base
+        for pre, fill, node in RenderTree(root):
             try:
                 print("%s n:%s nsa:%s a:%s" % (pre, node.mctsn, self.Nsa[(node.parent.id,node.action)],node.action))
             except AttributeError:

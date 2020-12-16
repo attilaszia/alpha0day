@@ -52,15 +52,17 @@ class MCTS():
 
         if temp == 0:
             bestAs = np.array(np.argwhere(counts == np.max(counts))).flatten()
-            #bestA = np.random.choice(bestAs)
-            bestA = bestAs[0]
+            bestA = np.random.choice(bestAs)
+            #bestA = bestAs[0]
 
             probs = [0] * len(counts)
             probs[bestA] = 1
             if self.vizshow:
+                print("Best actions:")
+                print(bestAs)
                 print("Choosing action %s according to tree:" % bestA)
                 print("\033[92m")
-                self.viztree.show(self.Ns, self.Nsa)
+                self.viztree.show(self.Ns, self.Nsa, s)
                 print("\033[0m")
             return probs
 
