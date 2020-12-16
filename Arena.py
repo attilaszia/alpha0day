@@ -1,5 +1,5 @@
 import logging
-
+import time
 from tqdm import tqdm
 
 log = logging.getLogger(__name__)
@@ -60,6 +60,7 @@ class Arena():
             assert self.display
             print("Game over: Turn ", str(it), "Result ", str(self.game.getGameEnded(board, 1)))
             self.display(board)
+        time.sleep(1.2)
         return curPlayer * self.game.getGameEnded(board, curPlayer)
 
     def playGames(self, num, verbose=False):

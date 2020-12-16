@@ -1,7 +1,7 @@
 import logging
 import math
-
 import numpy as np
+from MCTSviz import MCTSviz
 
 EPS = 1e-8
 
@@ -13,10 +13,13 @@ class MCTS():
     This class handles the MCTS tree.
     """
 
-    def __init__(self, game, nnet, args):
+    def __init__(self, game, nnet, args, vizshow=False):
         self.game = game
         self.nnet = nnet
         self.args = args
+        self.viztree = MCTSviz()
+        self.vizshow = vizshow
+
         self.Qsa = {}  # stores Q values for s,a (as defined in the paper)
         self.Nsa = {}  # stores #times edge s,a was visited
         self.Ns = {}  # stores #times board s was visited
@@ -24,6 +27,9 @@ class MCTS():
 
         self.Es = {}  # stores game.getGameEnded ended for board s
         self.Vs = {}  # stores game.getValidMoves for board s
+
+    def reset(self):
+        self.__init__(self, self.game, self.nnet, self.args, self.vizshow)
 
     def getActionProb(self, canonicalBoard, temp=1):
         """
@@ -121,7 +127,10 @@ class MCTS():
         a = best_act
         next_s, next_player = self.game.getNextState(canonicalBoard, 1, a)
         next_s = self.game.getCanonicalForm(next_s, next_player)
-
+        next_str = self.game.stringRepresentation(next_s)
+        self.viztree.add_node(next_str, s)
+        if self.vizshow:
+            self.viztree.show()
         v = self.search(next_s)
 
         if (s, a) in self.Qsa:
