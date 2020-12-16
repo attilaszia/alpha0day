@@ -114,6 +114,7 @@ class Coach():
             nmcts = MCTS(self.game, self.nnet, self.args)
 
             log.info('PITTING AGAINST PREVIOUS VERSION')
+            #this stuff has to change to make coaching work
             arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, temp=0)),
                           lambda x: np.argmax(nmcts.getActionProb(x, temp=0)), self.game)
             pwins, nwins, draws = arena.playGames(self.args.arenaCompare)

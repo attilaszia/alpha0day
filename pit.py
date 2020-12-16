@@ -69,5 +69,4 @@ else:
     player2 = n2p  # Player 2 is neural network if it's cpu vs cpu.
 
 arena = Arena.Arena(n1p, player2, g, display=TicTacToeGame.display)
-
-print(arena.playGames(10, verbose=True))
+print(arena.playGames(2, verbose=True))

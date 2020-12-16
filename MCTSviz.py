@@ -1,10 +1,10 @@
 import time
-from anytree import Node, RenderTree
+from anytree import AnyNode, RenderTree
 
 
 class MCTSviz():
     def __init__(self):
-        self.base = Node("init")
+        self.base = AnyNode(id="init", mctsn=0)
         self.nodes = {}
         self.nodes["init"] = self.base
 
@@ -16,12 +16,20 @@ class MCTSviz():
         if (boardstr in self.nodes):
             pass
         else:
-            node = Node(boardstr, parent=parent)
+            node = AnyNode(id=boardstr, parent=parent, mctsn=0)
             self.nodes[boardstr] = node
 
-    def show(self):
+    def update_data(self, Ns):
+        for s in Ns:
+            try:
+                self.nodes[s].mctsn = Ns[s]
+            except KeyError:
+                pass
+
+    def show(self, Ns):
+        self.update_data(Ns)
         for pre, fill, node in RenderTree(self.base):
-            print("%s." % (pre))
+            print("%s %s" % (pre, node.mctsn))
         time.sleep(0.1)
 
 

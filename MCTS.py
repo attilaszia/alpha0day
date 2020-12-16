@@ -31,6 +31,9 @@ class MCTS():
     def reset(self):
         self.__init__(self.game, self.nnet, self.args, self.vizshow)
 
+    def printdata(self):
+        print(self.Ns)
+
     def getActionProb(self, canonicalBoard, temp=1):
         """
         This function performs numMCTSSims simulations of MCTS starting from
@@ -57,6 +60,8 @@ class MCTS():
         counts = [x ** (1. / temp) for x in counts]
         counts_sum = float(sum(counts))
         probs = [x / counts_sum for x in counts]
+        if self.vizshow:
+            self.viztree.show(self.Ns)
         return probs
 
     def search(self, canonicalBoard):
@@ -89,7 +94,7 @@ class MCTS():
 
         if s not in self.Ps:
             if self.vizshow:
-                self.viztree.show()
+                self.viztree.show(self.Ns)
             # leaf node
             self.Ps[s], v = self.nnet.predict(canonicalBoard)
             valids = self.game.getValidMoves(canonicalBoard, 1)
