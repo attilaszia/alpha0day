@@ -20,6 +20,11 @@ class MCTSviz():
             node = AnyNode(id=boardstr, parent=parent, mctsn=0, action=a)
             self.nodes[boardstr] = node
 
+    def rebase(self, s):
+        for child in self.base.children:
+            #print("%s should be removed" % child.action)
+            child.parent = None
+
     def update_data(self, Ns, Nsa):
         self.Nsa = Nsa
         for s in Ns:
