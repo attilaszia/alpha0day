@@ -1,5 +1,6 @@
 import logging
 import math
+import sys
 import numpy as np
 from MCTSviz import MCTSviz
 
@@ -53,15 +54,20 @@ class MCTS():
             bestAs = np.array(np.argwhere(counts == np.max(counts))).flatten()
             #bestA = np.random.choice(bestAs)
             bestA = bestAs[0]
+
             probs = [0] * len(counts)
             probs[bestA] = 1
+            if self.vizshow:
+                print("Choosing action %s according to tree:" % bestA)
+                print("\033[92m")
+                self.viztree.show(self.Ns, self.Nsa)
+                print("\033[0m")
             return probs
 
         counts = [x ** (1. / temp) for x in counts]
         counts_sum = float(sum(counts))
         probs = [x / counts_sum for x in counts]
-        if self.vizshow:
-            self.viztree.show(self.Ns)
+
         return probs
 
     def search(self, canonicalBoard):
@@ -93,8 +99,8 @@ class MCTS():
             return -self.Es[s]
 
         if s not in self.Ps:
-            if self.vizshow:
-                self.viztree.show(self.Ns)
+            #if self.vizshow:
+            #    self.viztree.show(self.Ns, self.Nsa)
             # leaf node
             self.Ps[s], v = self.nnet.predict(canonicalBoard)
             valids = self.game.getValidMoves(canonicalBoard, 1)
@@ -136,7 +142,7 @@ class MCTS():
         next_s, next_player = self.game.getNextState(canonicalBoard, 1, a)
         next_s = self.game.getCanonicalForm(next_s, next_player)
         next_str = self.game.stringRepresentation(next_s)
-        self.viztree.add_node(next_str, s)
+        self.viztree.add_node(next_str, s, a)
 
         v = self.search(next_s)
 

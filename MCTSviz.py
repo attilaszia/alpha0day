@@ -4,11 +4,12 @@ from anytree import AnyNode, RenderTree
 
 class MCTSviz():
     def __init__(self):
-        self.base = AnyNode(id="init", mctsn=0)
+        self.base = AnyNode(id="init", mctsn=0, action=None)
         self.nodes = {}
         self.nodes["init"] = self.base
+        self.Nsa = None
 
-    def add_node(self, boardstr, parent):
+    def add_node(self, boardstr, parent, a):
         try:
             parent = self.nodes[parent]
         except KeyError:
@@ -16,20 +17,28 @@ class MCTSviz():
         if (boardstr in self.nodes):
             pass
         else:
-            node = AnyNode(id=boardstr, parent=parent, mctsn=0)
+            node = AnyNode(id=boardstr, parent=parent, mctsn=0, action=a)
             self.nodes[boardstr] = node
 
-    def update_data(self, Ns):
+    def update_data(self, Ns, Nsa):
+        self.Nsa = Nsa
         for s in Ns:
             try:
                 self.nodes[s].mctsn = Ns[s]
             except KeyError:
                 pass
 
-    def show(self, Ns):
-        self.update_data(Ns)
+    def show(self, Ns, Nsa):
+        self.update_data(Ns, Nsa)
         for pre, fill, node in RenderTree(self.base):
-            print("%s %s" % (pre, node.mctsn))
+            try:
+                print("%s n:%s nsa:%s a:%s" % (pre, node.mctsn, self.Nsa[(node.parent.id,node.action)],node.action))
+            except AttributeError:
+                print("%s %s a:%s" % (pre, node.mctsn, node.action))
+                pass
+            except KeyError:
+                print("%s %s a:%s" % (pre, node.mctsn, node.action))
+                pass
         time.sleep(0.1)
 
 

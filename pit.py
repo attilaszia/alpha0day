@@ -61,7 +61,7 @@ if human_vs_cpu:
 else:
     n2 = NNet(g)
     n2.load_checkpoint('./temp', 'best.pth.tar')
-    args2 = dotdict({'numMCTSSims': 9, 'cpuct': 1.0})
+    args2 = dotdict({'numMCTSSims': 5, 'cpuct': 1.0})
     mcts2 = MCTS(g, n2, args2, vizshow = True)
     n2p = MctsPlayer(mcts2)
     #n2p = lambda x: np.argmax(mcts2.getActionProb(x, temp=0))
