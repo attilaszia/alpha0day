@@ -20,6 +20,8 @@ class MCTS():
         self.args = args
         self.viztree = MCTSviz()
         self.vizshow = vizshow
+        if self.vizshow:
+            self.color = self.args["color"]
 
         self.Qsa = {}  # stores Q values for s,a (as defined in the paper)
         self.Nsa = {}  # stores #times edge s,a was visited
@@ -59,10 +61,15 @@ class MCTS():
             probs = [0] * len(counts)
             probs[bestA] = 1
             if self.vizshow:
-                print("Best actions:")
-                print(bestAs)
+                #print("Best actions:")
+                #print(bestAs)
+
+                if self.color == "green":
+                    print("\033[92m")
+                elif self.color == "blue":
+                    print("\033[94m")
+
                 print("Choosing action %s according to tree:" % bestA)
-                print("\033[92m")
                 self.viztree.show(self.Ns, self.Nsa, s)
                 print("\033[0m")
             return probs
