@@ -5,6 +5,7 @@ from Coach import Coach
 from tictactoe.TicTacToeGame import TicTacToeGame
 from tictactoe.keras.NNet import NNetWrapper as nn
 from utils import *
+import os
 
 #from Coach import Coach
 #from othello.OthelloGame import OthelloGame as Game
@@ -12,6 +13,7 @@ from utils import *
 #from utils import *
 
 log = logging.getLogger(__name__)
+os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
 
 coloredlogs.install(level='INFO')  # Change this to DEBUG to see more info.
 

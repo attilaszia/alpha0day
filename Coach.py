@@ -10,6 +10,7 @@ from tqdm import tqdm
 
 from Arena import Arena
 from MCTS import MCTS
+from MCTSPlayer import MctsPlayer
 
 log = logging.getLogger(__name__)
 
@@ -115,8 +116,13 @@ class Coach():
 
             log.info('PITTING AGAINST PREVIOUS VERSION')
             #this stuff has to change to make coaching work
-            arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, temp=0)),
-                          lambda x: np.argmax(nmcts.getActionProb(x, temp=0)), self.game)
+            pmctsplayer = MctsPlayer(pmcts)
+            nmctsplayer = MctsPlayer(nmcts)
+
+            arena = Arena(pmctsplayer,nmctsplayer, self.game)
+
+            #arena = Arena(lambda x: np.argmax(pmcts.getActionProb(x, temp=0)),
+            #              lambda x: np.argmax(nmcts.getActionProb(x, temp=0)), self.game)
             pwins, nwins, draws = arena.playGames(self.args.arenaCompare)
 
             log.info('NEW/PREV WINS : %d / %d ; DRAWS : %d' % (nwins, pwins, draws))

@@ -1,9 +1,12 @@
 import Arena
 import DiffArena
 from MCTS import MCTS
+from MCTSPlayer import MctsPlayer
 from tictactoe.TicTacToeGame import TicTacToeGame
 from tictactoe.keras.NNet import NNetWrapper as NNet
 from tictactoe.TicTacToePlayers import HumanTicTacToePlayer
+import os
+
 #from othello.OthelloGame import OthelloGame
 #from othello.OthelloPlayers import *
 #from othello.pytorch.NNet import NNetWrapper as NNet
@@ -16,6 +19,8 @@ from utils import *
 use this script to play any two agents against each other, or play manually with
 any agent.
 """
+
+os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'
 
 mini_othello = False  # Play in 6x6 instead of the normal 8x8.
 human_vs_cpu = False
@@ -31,19 +36,6 @@ g = TicTacToeGame()
 #rp = RandomPlayer(g).play
 #gp = GreedyOthelloPlayer(g).play
 hp = HumanTicTacToePlayer(g).play
-
-class MctsPlayer:
-    def __init__(self, mcts):
-        print("MCTS initialized with %s" % mcts)
-        self.mcts = mcts
-
-    def play(self, x):
-        return np.argmax(self.mcts.getActionProb(x, temp=0))
-
-    def reset(self):
-        self.mcts.reset()
-
-
 
 # nnet players
 n1 = NNet(g)
