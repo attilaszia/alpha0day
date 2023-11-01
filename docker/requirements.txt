@@ -13,3 +13,5 @@ torchfile==0.1.0
 torchvision==0.2.1
 tqdm==4.19.5
 visdom==0.1.7
+tornado>=6.3.3 # not directly required, pinned by Snyk to avoid a vulnerability
+werkzeug>=3.0.1 # not directly required, pinned by Snyk to avoid a vulnerability
